@@ -9,10 +9,12 @@ counter = 0
 kingOfTheHill = ""
 scoreboard = dict()
 
+app_dir = os.path.dirname(os.path.realpath(__file__))
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         global counter
-        self.render("static/TheButton.html", scoreboard=scoreboard)
+        self.render(app_dir + "/public/index.html", scoreboard=scoreboard)
 
 class ButtonHandler(tornado.web.RequestHandler):
     def post(self):
@@ -41,7 +43,9 @@ def make_app():
         (r"/", MainHandler),
         (r"/button", ButtonHandler),
         (r"/scoresocket", ScoreSocketHandler),
-        (r"/static/(.*)", tornado.web.StaticFileHandler, {"path": "static/"}),
+        (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/css/"}),
+        (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/js/"}),
+        (r"/images/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/images/"}),
     ])
 
 def checkButton():

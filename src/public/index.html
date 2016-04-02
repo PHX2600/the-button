@@ -1,0 +1,46 @@
+<html>
+
+<head>
+
+    <title>The Button</title>
+
+    <link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" media="screen" rel="stylesheet" type="text/css">
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h3>The Button</h3>
+
+        <button id="button" class="btn btn-default">The Button</button>
+
+        <br>
+        <span class="login_text">Team Name:</span>
+        <br>
+        <input id="team" type="text" name="team" value="">
+        <br><br>
+
+        <table id="scoreboard">
+            <tr>
+              <th>Team Name</th>
+              <th>Score</th>
+            </tr>
+            {% for scores in scoreboard %}
+            <tr>
+                <td>{{scores}}</td>
+                <td>{{scoreboard[scores]}}</td>
+            </tr>
+            {% end %}
+        </table>
+
+    </div>
+
+</body>
+</html>

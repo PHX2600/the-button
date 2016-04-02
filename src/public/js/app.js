@@ -1,11 +1,3 @@
-<html>
-
-<head>
-    <title>The Button</title>
-</head>
-
-<script src="static/jquery-1.12.2.min.js"></script>
-<script type="text/javascript">
 var socket = new WebSocket("ws://" + location.host + "/scoresocket");
 socket.onmessage = function(event)
 {
@@ -67,27 +59,3 @@ $(document).ready(function() {
         })
     });
 });
-</script>
-
-<h3>The Button</h3>
-<body>
-    <input type="image" id="button" value="The Button" src="static/redbutton.png">
-    <br>
-    <span class="login_text">Team Name:</span>
-    <br>
-    <input id="team" type="text" name="team" value="">
-    <br><br>
-    <table id="scoreboard">
-        <tr>
-          <th>Team Name</th>
-          <th>Score</th>
-        </tr>
-        {% for scores in scoreboard %}
-        <tr>
-            <td>{{scores}}</td>
-            <td>{{scoreboard[scores]}}</td>
-        </tr>
-        {% end %}
-    </table>
-</body>
-</html>
