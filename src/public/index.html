@@ -7,9 +7,9 @@
     <link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
     <link href="/css/style.css" media="screen" rel="stylesheet" type="text/css">
 
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/socket.js"></script>
 
 </head>
 
@@ -23,10 +23,10 @@
 
             <hr>
 
-            <form>
+            <form id="the-button-form">
 
                 <div class="form-group">
-                    <label for="team"  class="login_text">Team Name</label>
+                    <label for="team" class="login_text">Team Name</label>
                     <input type="text" name="team" placeholder="Team Secret" id="team" class="form-control input-lg">
                 </div>
 
@@ -38,22 +38,31 @@
 
             <hr>
 
-            <table id="scoreboard">
-                <tr>
-                  <th>Team Name</th>
-                  <th>Score</th>
-                </tr>
-                {% for scores in scoreboard %}
-                <tr>
-                    <td>{{scores}}</td>
-                    <td>{{scoreboard[scores]}}</td>
-                </tr>
-                {% end %}
+            <table id="scoreboard" class="table">
+
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th class="text-center">Score</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for team in scoreboard %}
+                        <tr id="{{team}}">
+                            <td id="team-name">{{team}}</td>
+                            <td id="team-score">{{scoreboard[team]}}</td>
+                        </tr>
+                    {% end %}
+                </tbody>
+
             </table>
 
         </div>
 
     </div>
+
+    <script type="text/javascript" src="/js/app.js"></script>
 
 </body>
 </html>
