@@ -17,28 +17,41 @@
 
     <div class="container">
 
-        <h3>The Button</h3>
+        <div class="col-sm-6 col-sm-offset-3 text-center">
 
-        <button id="button" class="btn btn-default">The Button</button>
+            <h1>The Button</h1>
 
-        <br>
-        <span class="login_text">Team Name:</span>
-        <br>
-        <input id="team" type="text" name="team" value="">
-        <br><br>
+            <hr>
 
-        <table id="scoreboard">
-            <tr>
-              <th>Team Name</th>
-              <th>Score</th>
-            </tr>
-            {% for scores in scoreboard %}
-            <tr>
-                <td>{{scores}}</td>
-                <td>{{scoreboard[scores]}}</td>
-            </tr>
-            {% end %}
-        </table>
+            <form>
+
+                <div class="form-group">
+                    <label for="team"  class="login_text">Team Name</label>
+                    <input type="text" name="team" placeholder="Team Secret" id="team" class="form-control input-lg">
+                </div>
+
+                <button id="button" class="btn btn-danger btn-lg btn-block">
+                    <br>The Button<br><br>
+                </button>
+
+            </form>
+
+            <hr>
+
+            <table id="scoreboard">
+                <tr>
+                  <th>Team Name</th>
+                  <th>Score</th>
+                </tr>
+                {% for scores in scoreboard %}
+                <tr>
+                    <td>{{scores}}</td>
+                    <td>{{scoreboard[scores]}}</td>
+                </tr>
+                {% end %}
+            </table>
+
+        </div>
 
     </div>
 
