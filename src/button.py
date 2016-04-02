@@ -7,6 +7,7 @@ import json
 
 counter = 0
 kingOfTheHill = ""
+goingNegative = False
 scoreboard = dict()
 
 app_dir = os.path.dirname(os.path.realpath(__file__))
@@ -19,7 +20,13 @@ class MainHandler(tornado.web.RequestHandler):
 class ButtonHandler(tornado.web.RequestHandler):
     def post(self):
         global kingOfTheHill
+        global goingNegative
         team = self.get_argument('team', None)
+        if(team == kingOfTheHill):
+            #They pressed the button twice in a row!
+            goingNegative = True
+        else:
+            goingNegative = False
         kingOfTheHill = team
         if(scoreboard.get(kingOfTheHill) == None):
             scoreboard[kingOfTheHill] = 0
@@ -52,10 +59,16 @@ def checkButton():
     tornado.ioloop.IOLoop.current().add_timeout(time.time() + 1, checkButton)
     global counter
     global kingOfTheHill
+    global goingNegative
     counter = counter+1
     if(kingOfTheHill != ""):
         old = scoreboard[kingOfTheHill]
-        scoreboard[kingOfTheHill] = old+1
+        if(goingNegative):
+            scoreboard[kingOfTheHill] = old-1.5
+            if(scoreboard[kingOfTheHill] < 0):
+                scoreboard[kingOfTheHill] = 0
+        else:
+            scoreboard[kingOfTheHill] = old+1
         ScoreSocketHandler.send_updates(json.dumps(scoreboard))
 
 if __name__ == "__main__":
