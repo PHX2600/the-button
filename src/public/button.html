@@ -1,0 +1,67 @@
+<html>
+
+<head>
+
+    <title>The Button</title>
+
+    <link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" media="screen" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/socket.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="col-sm-6 col-sm-offset-3 text-center">
+
+            <h1>The Button</h1>
+
+            <hr>
+
+            <form id="the-button-form">
+
+                <div class="form-group">
+                    <input type="text" name="team" value="{{teamname}}" id="team" style="display: none">
+                </div>
+
+                <button id="button" class="btn btn-danger btn-lg btn-block">
+                    <br>The Button<br><br>
+                </button>
+
+            </form>
+
+            <hr>
+
+            <table id="scoreboard" class="table">
+
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th class="text-center">Score</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for team in scoreboard %}
+                        <tr id="{{team}}">
+                            <td id="team-name">{{team}}</td>
+                            <td id="team-score">{{scoreboard[team]}}</td>
+                        </tr>
+                    {% end %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="/js/app.js"></script>
+
+</body>
+</html>
