@@ -6,13 +6,16 @@ import tornado.websocket
 import json
 import sqlite3
 import bcrypt
+import operator
 
-counter = 0
 kingOfTheHill = ""
 goingNegative = False
 scoreboard = dict()
 app_dir = os.path.dirname(os.path.realpath(__file__))
 db = sqlite3.connect('database.db')
+#TODO Change this to 3600 for production
+time_in_round = 20
+flag_index = 0
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -55,9 +58,21 @@ class ScoreSocketHandler(tornado.websocket.WebSocketHandler):
         ScoreSocketHandler.buttoneers.remove(self)
 
     @classmethod
-    def send_updates(cls, message):
-        for buttoneer in cls.buttoneers:
+    def send_updates(self, message):
+        for buttoneer in self.buttoneers:
             buttoneer.write_message(message)
+
+    @classmethod
+    def send_flag_to(self, winner):
+        global db
+        cursor = db.cursor()
+        cursor.execute("SELECT * from flags")
+        rows = cursor.fetchall()
+        flag_text = rows[flag_index]
+
+        for buttoneer in self.buttoneers:
+            if buttoneer.get_secure_cookie("userid") == winner:
+                buttoneer.write_message('{"flag" : "' + str(flag_text[1]) + '"}')
 
 class LoginHandler(BaseHandler):
     def post(self):
@@ -98,10 +113,8 @@ def make_app():
 
 def checkButton():
     tornado.ioloop.IOLoop.current().add_timeout(time.time() + 1, checkButton)
-    global counter
     global kingOfTheHill
     global goingNegative
-    counter = counter+1
     if(kingOfTheHill != ""):
         old = scoreboard[kingOfTheHill]
         if(goingNegative):
@@ -112,8 +125,21 @@ def checkButton():
             scoreboard[kingOfTheHill] = old+1
         ScoreSocketHandler.send_updates(json.dumps(scoreboard))
 
+def resetRound():
+    tornado.ioloop.IOLoop.current().add_timeout(time.time() + time_in_round, resetRound)
+    global kingOfTheHill
+    global scoreboard
+    global flag_index
+    winner = max(scoreboard.iteritems(), key=operator.itemgetter(1))[0]
+    #Delete the scoreboard to start again
+    scoreboard = dict()
+    kingOfTheHill = ""
+    ScoreSocketHandler.send_flag_to(winner)
+    flag_index = flag_index + 1
+
 if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
     tornado.ioloop.IOLoop.current().add_timeout(time.time() + 1, checkButton)
+    tornado.ioloop.IOLoop.current().add_timeout(time.time() + time_in_round, resetRound)
     tornado.ioloop.IOLoop.current().start()
