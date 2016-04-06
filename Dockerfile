@@ -3,11 +3,12 @@ MAINTAINER Dan Petro <AltF4Warrior@Gmail.com> & Chris Kankiewicz <Chris@ChrisKan
 
 RUN mkdir -pv /opt/app
 
-RUN apk add --update python py-tornado \
-    && apk del --purge gcc git tar wget && rm -rf /var/cache/apk/*
+COPY ./ /opt/app/
 
-COPY src/ /opt/app/
+RUN apk add --update gcc libffi-dev musl-dev python-dev py-pip py-tornado sqlite \
+    && pip install -r /opt/app/requirements.txt \
+    && apk del --purge gcc && rm -rf /var/cache/apk/*
 
-WORKDIR "/opt/app"
+RUN cd /opt/app/ && sqlite3 database.db < schema.sql
 
-CMD ["python", "button.py"]
+CMD ["python", "/opt/app/src/button.py"]
