@@ -14,7 +14,7 @@ goingNegative = False
 scoreboard = dict()
 captchas = dict()
 app_dir = os.path.dirname(os.path.realpath(__file__))
-db = sqlite3.connect('database.db')
+db = sqlite3.connect(app_dir + '/../database.db')
 #TODO Change this to 3600 for production
 time_in_round = 20
 flag_index = 0
