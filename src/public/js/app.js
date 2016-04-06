@@ -1,13 +1,11 @@
 $(document).ready(function() {
 
-
     $("#loginbutton").click(function(event){
 
         event.preventDefault();
 
-        $.ajax({
+        jQuery.post({
             url: "/login",
-            type: "POST",
             data: $("#loginform").serialize(),
             statusCode: {
                 200: function() {
@@ -26,11 +24,9 @@ $(document).ready(function() {
 
         event.preventDefault();
 
-        var team_name = document.getElementById("team").value;
-
         jQuery.post({
             url: "/button",
-            data: {team: team_name}
+            data: {team: $('#team').value}
         });
 
     });
