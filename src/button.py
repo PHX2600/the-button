@@ -7,10 +7,12 @@ import json
 import sqlite3
 import bcrypt
 import operator
+import random
 
 kingOfTheHill = ""
 goingNegative = False
 scoreboard = dict()
+captchas = dict()
 app_dir = os.path.dirname(os.path.realpath(__file__))
 db = sqlite3.connect('database.db')
 #TODO Change this to 3600 for production
@@ -33,7 +35,24 @@ class ButtonHandler(BaseHandler):
     def post(self):
         global kingOfTheHill
         global goingNegative
+        global captchas
         team = self.get_argument('team', None)
+        captcha = self.get_argument('captcha', None)
+        captcha_id = self.get_argument('captcha_id', None)
+
+        if not team or not captcha or not captcha_id:
+            raise tornado.web.HTTPError(403)
+
+        #check the captcha
+        captcha_id_int = int(captcha_id)
+        captcha_answer = captchas[captcha_id_int]
+        if not captchas[captcha_id_int]:
+            raise tornado.web.HTTPError(403)
+
+        del captchas[captcha_id_int]
+        if captcha_answer != captcha:
+            raise tornado.web.HTTPError(403)
+
         if(team == kingOfTheHill):
             #They pressed the button twice in a row!
             goingNegative = True
@@ -73,6 +92,9 @@ class ScoreSocketHandler(tornado.websocket.WebSocketHandler):
         for buttoneer in self.buttoneers:
             if buttoneer.get_secure_cookie("userid") == winner:
                 buttoneer.write_message('{"flag" : "' + str(flag_text[1]) + '"}')
+            else:
+                buttoneer.write_message('{"flag" : "Sorry, you lost this round :("}')
+
 
 class LoginHandler(BaseHandler):
     def post(self):
@@ -99,12 +121,51 @@ class LoginHandler(BaseHandler):
         else:
             raise tornado.web.HTTPError(403)
 
+class CaptchaHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        captcha = ""
+        images = dict()
+        #Six digit random number
+        for i in range(6):
+            num = random.randint(0, 9)
+            captcha = captcha + str(num)
+            filename = ""
+            if(num == 0):
+                filename = "30e81ddd887ee347f68f9434ad3b8b0c.png"
+            elif(num == 1):
+                filename = "a90a90b322ea5a99d19f589fa42fb32c.png"
+            elif(num == 2):
+                filename = "20b6f4d2cb789ae32a8b267924bae39a.png"
+            elif(num == 3):
+                filename = "0df2eba54857d80164b2644b53d62529.png"
+            elif(num == 4):
+                filename = "6f5cd4a2329bd9ab39f3c2f8a0635e76.png"
+            elif(num == 5):
+                filename = "14ccbf3db9c27aa41e9449e245172faf.png"
+            elif(num == 6):
+                filename = "3f278f90f33c4238b676a165186047b7.png"
+            elif(num == 7):
+                filename = "9e928437e18355adc3136c42613a1bb2.png"
+            elif(num == 8):
+                filename = "ab32f699fe869f591007fe5095fb59ab.png"
+            elif(num == 9):
+                filename = "d342c63cb19f14fb8024df589756a73c.png"
+
+            images[i] = filename
+
+        uuid = random.randint(0, 100000000)
+        images[1337] = uuid #insert uuid into the response, index 1337
+        captchas[uuid] = captcha
+        self.write(json.dumps(images))
+
 def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
         (r"/button", ButtonHandler),
         (r"/scoresocket", ScoreSocketHandler),
         (r"/login", LoginHandler),
+        (r"/captcha", CaptchaHandler),
         (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/css/"}),
         (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/js/"}),
         (r"/images/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/images/"}),
