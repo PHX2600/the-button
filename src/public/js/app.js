@@ -35,4 +35,15 @@ $(document).ready(function() {
 
     });
 
+    var now = new Date();
+    var mins = now.getMinutes();
+    var secs = now.getSeconds();
+    var time_left = ((60 - mins - 1) * 60) + (60 - secs - 1);
+
+    // Instantiate a coutdown FlipClock
+    var clock = $('.clock').FlipClock(time_left, {
+        clockFace: 'MinuteCounter',
+        countdown: true
+    });
+
 });
