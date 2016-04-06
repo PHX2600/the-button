@@ -99,12 +99,20 @@ class LoginHandler(BaseHandler):
         else:
             raise tornado.web.HTTPError(403)
 
+class CaptchaHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        digit = rand() % 10
+        captcha = set()
+        self.render(json.dumps(captcha))
+
 def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
         (r"/button", ButtonHandler),
         (r"/scoresocket", ScoreSocketHandler),
         (r"/login", LoginHandler),
+        (r"/captcha", CaptchaHandler),
         (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/css/"}),
         (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/js/"}),
         (r"/images/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/images/"}),
