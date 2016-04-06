@@ -24,9 +24,9 @@ $(document).ready(function() {
 
         event.preventDefault();
 
-        var team_name = document.getElementById("team").value;
-        var captcha_solve = document.getElementById("captcha-input").value;
-        var captcha_id = document.getElementById("captcha_id").value;
+        var team_name = $("#team").value;
+        var captcha_solve = $("#captcha-input").value;
+        var captcha_id = $("#captcha_id").value;
 
         jQuery.post({
             url: "/button",
