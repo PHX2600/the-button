@@ -22,7 +22,7 @@ $(document).ready(function() {
 
     jQuery.get("/captcha", function(data){
         var images = $.parseJSON( data );
-        $('#captcha').empty()
+        $('#captcha').empty();
         for (image in images) {
             if (image == 1337){
                 $('#captcha').append("<input type='text' name='captcha_id' value='" + images[image] + "' id='captcha_id' style='display: none'>");
@@ -36,9 +36,9 @@ $(document).ready(function() {
 
         event.preventDefault();
 
-        var team_name = $("#team").value;
-        var captcha_solve = $("#captcha-input").value;
-        var captcha_id = $("#captcha_id").value;
+        var team_name = $("#team").val();
+        var captcha_solve = $("#captcha-input").val();
+        var captcha_id = $("#captcha_id").val();
 
         jQuery.post({
             url: "/button",
