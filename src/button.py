@@ -7,6 +7,7 @@ import json
 import sqlite3
 import bcrypt
 import operator
+import random
 
 kingOfTheHill = ""
 goingNegative = False
@@ -102,9 +103,37 @@ class LoginHandler(BaseHandler):
 class CaptchaHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        digit = rand() % 10
-        captcha = set()
-        self.render(json.dumps(captcha))
+        captcha = ""
+        images = dict()
+        #Six digit random number
+        for i in range(6):
+            num = random.randint(0, 9)
+            captcha = captcha + str(num)
+            filename = ""
+            if(num == 0):
+                filename = "30e81ddd887ee347f68f9434ad3b8b0c.png"
+            elif(num == 1):
+                filename = "a90a90b322ea5a99d19f589fa42fb32c.png"
+            elif(num == 2):
+                filename = "20b6f4d2cb789ae32a8b267924bae39a.png"
+            elif(num == 3):
+                filename = "0df2eba54857d80164b2644b53d62529.png"
+            elif(num == 4):
+                filename = "6f5cd4a2329bd9ab39f3c2f8a0635e76.png"
+            elif(num == 5):
+                filename = "14ccbf3db9c27aa41e9449e245172faf.png"
+            elif(num == 6):
+                filename = "3f278f90f33c4238b676a165186047b7.png"
+            elif(num == 7):
+                filename = "9e928437e18355adc3136c42613a1bb2.png"
+            elif(num == 8):
+                filename = "ab32f699fe869f591007fe5095fb59ab.png"
+            elif(num == 9):
+                filename = "d342c63cb19f14fb8024df589756a73c.png"
+
+            images[i] = filename
+
+        self.write(json.dumps(images))
 
 def make_app():
     return tornado.web.Application([
