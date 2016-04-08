@@ -40,6 +40,18 @@ $(document).ready(function() {
         var captcha_solve = $("#captcha-input").val();
         var captcha_id = $("#captcha_id").val();
 
+        jQuery.get("/captcha", function(data){
+            var images = $.parseJSON( data );
+            $('#captcha').empty();
+            for (image in images) {
+                if (image == 1337){
+                    $('#captcha').append("<input type='text' name='captcha_id' value='" + images[image] + "' id='captcha_id' style='display: none'>");
+                } else {
+                    $('#captcha').append('<img src="/images/' + images[image] + '">');
+                }
+            }
+        });
+
         jQuery.post({
             url: "/button",
             data: {team: team_name, captcha: captcha_solve, captcha_id: captcha_id}
