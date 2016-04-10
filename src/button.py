@@ -46,8 +46,6 @@ class ButtonHandler(BaseHandler):
             raise tornado.web.HTTPError(403)
 
         if(str(md5.new(team + captcha + captcha_id).hexdigest()) != token):
-            print str(md5.new(team + captcha + captcha_id).digest())
-            print token
             raise tornado.web.HTTPError(403)
 
         #check the captcha
