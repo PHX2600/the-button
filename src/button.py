@@ -16,8 +16,8 @@ scoreboard = dict()
 captchas = dict()
 app_dir = os.path.dirname(os.path.realpath(__file__))
 db = sqlite3.connect(app_dir + '/../database.db')
-#TODO Change this to 3600 for production
-time_in_round = 20
+#TODO Change this to 1800 for production
+time_in_round = 1800
 flag_index = 0
 
 class BaseHandler(tornado.web.RequestHandler):

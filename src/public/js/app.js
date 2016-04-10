@@ -6,7 +6,7 @@ function captcha() {
       if (image == 1337){
         $('#captcha').append("<input type='text' name='captcha_id' value='" + images[image] + "' id='captcha_id' style='display: none'>");
       } else {
-        $('#captcha').append('<img src="/images/' + images[image] + '">');
+        $('#captcha').append('<img src="/images/' + images[image] + '" width="50px" height="75px">');
       }
     }
   });
@@ -56,7 +56,12 @@ $(document).ready(function() {
     var now = new Date();
     var mins = now.getMinutes();
     var secs = now.getSeconds();
-    var time_left = ((60 - mins - 1) * 60) + (60 - secs - 1);
+    var mins_left = (60 - mins - 1);
+    if(mins_left >= 30)
+    {
+        mins_left = mins_left - 30;
+    }
+    var time_left = (mins_left * 60) + (60 - secs - 1);
 
     // Instantiate a coutdown FlipClock
     var clock = $('.clock').FlipClock(time_left, {
