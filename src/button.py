@@ -8,6 +8,7 @@ import sqlite3
 import bcrypt
 import operator
 import random
+import md5
 
 kingOfTheHill = ""
 goingNegative = False
@@ -39,8 +40,14 @@ class ButtonHandler(BaseHandler):
         team = self.get_argument('team', None)
         captcha = self.get_argument('captcha', None)
         captcha_id = self.get_argument('captcha_id', None)
+        token = self.get_argument('token', None)
 
-        if not team or not captcha or not captcha_id:
+        if not team or not captcha or not captcha_id or not token:
+            raise tornado.web.HTTPError(403)
+
+        if(str(md5.new(team + captcha + captcha_id).hexdigest()) != token):
+            print str(md5.new(team + captcha + captcha_id).digest())
+            print token
             raise tornado.web.HTTPError(403)
 
         #check the captcha

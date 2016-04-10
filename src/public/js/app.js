@@ -42,12 +42,13 @@ $(document).ready(function() {
         var team_name = $("#team").val();
         var captcha_solve = $("#captcha-input").val();
         var captcha_id = $("#captcha_id").val();
+        var token = md5(team_name + captcha_solve + captcha_id);
 
         captcha();
 
         jQuery.post({
             url: "/button",
-            data: {team: team_name, captcha: captcha_solve, captcha_id: captcha_id}
+            data: {team: team_name, captcha: captcha_solve, captcha_id: captcha_id, token: token}
         });
 
     });
