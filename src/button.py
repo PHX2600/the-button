@@ -18,6 +18,8 @@ app_dir = os.path.dirname(os.path.realpath(__file__))
 db = sqlite3.connect(app_dir + '/../database.db')
 #TODO Change this to 1800 for production
 time_in_round = 1800
+min_time_between_clicks = 1
+spam_ban_time = 10
 flag_index = 0
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -48,6 +50,31 @@ class ButtonHandler(BaseHandler):
         if(str(md5.new(team + captcha + captcha_id).hexdigest()) != token):
             raise tornado.web.HTTPError(403)
 
+        # is the team being spammy?
+        now = time.time()
+        cursor = db.cursor()
+        packaged = (team, ) #no idea why you have to do this
+        cursor.execute("SELECT * from teams WHERE name=? LIMIT 1", packaged)
+        row = cursor.fetchone()
+        if not row:
+            raise tornado.web.HTTPError(403)
+        last_click = row[4]
+        spamming = row[5]
+
+        since_last_click = now - last_click
+
+        if (spamming != 0):
+            if (since_last_click > spam_ban_time):
+                self.set_spamming(team, 0)
+            else:
+                raise tornado.web.HTTPError(403)
+        else:
+            if (since_last_click < min_time_between_clicks):
+                self.set_spamming(team, 1)
+                raise tornado.web.HTTPError(403)
+
+        self.set_click_time(team, now)
+
         #check the captcha
         captcha_id_int = int(captcha_id)
         captcha_answer = captchas[captcha_id_int]
@@ -71,6 +98,18 @@ class ButtonHandler(BaseHandler):
     def get(self):
         teamname = self.get_current_user()
         self.render(app_dir + "/public/button.html", scoreboard=scoreboard, teamname=teamname)
+
+    def set_spamming(self, team, spamming):
+        cursor = db.cursor()
+        packaged = (spamming, team) #no idea why you have to do this
+        cursor.execute("UPDATE teams SET spamming=? WHERE name=?", packaged)
+        db.commit()
+
+    def set_click_time(self, team, now):
+        cursor = db.cursor()
+        packaged = (now, team) #no idea why you have to do this
+        cursor.execute("UPDATE teams SET last_click=? WHERE name=?", packaged)
+        db.commit()
 
 class ScoreSocketHandler(tornado.websocket.WebSocketHandler):
     buttoneers = set()

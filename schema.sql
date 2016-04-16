@@ -6,7 +6,9 @@ CREATE TABLE teams(
     id INTEGER PRIMARY KEY NOT NULL,
     name TEXT(20) NOT NULL UNIQUE,
     score REAL(10, 2),
-    hash TEXT(100) NOT NULL
+    hash TEXT(100) NOT NULL,
+    last_click REAL,
+    spamming INTEGER
 );
 
 DROP TABLE IF EXISTS flags;
@@ -22,6 +24,6 @@ INSERT into flags (value) VALUES ('congrats flag3');
 INSERT into flags (value) VALUES ('congrats flag4');
 INSERT into flags (value) VALUES ('congrats flag5');
 
-INSERT into teams (name, score, hash) VALUES ('aaa', 0, '$2a$04$v6PKN3tpOyaiKV/3VZOjh.RRoDUDvITVLZuSwhzyRVbK82ANFMQOi');
-INSERT into teams (name, score, hash) VALUES ('bbb', 0, '$2a$12$ydNsdi763MvDytMGdiBNE.rqWeoJxx9pRYHKyIRZ3l/E.x6pLOLmi');
-INSERT into teams (name, score, hash) VALUES ('ccc', 0, '$2a$12$uW7DWD3n497ZlVA1gJiuhOftfIudF/nINoiQKwm2/3rnvjuCg6Ldy');
+INSERT into teams (name, score, hash, last_click, spamming) VALUES ('aaa', 0, '$2a$04$v6PKN3tpOyaiKV/3VZOjh.RRoDUDvITVLZuSwhzyRVbK82ANFMQOi', 10000, 0);
+INSERT into teams (name, score, hash, last_click, spamming) VALUES ('bbb', 0, '$2a$12$ydNsdi763MvDytMGdiBNE.rqWeoJxx9pRYHKyIRZ3l/E.x6pLOLmi', 10000, 0);
+INSERT into teams (name, score, hash, last_click, spamming) VALUES ('ccc', 0, '$2a$12$uW7DWD3n497ZlVA1gJiuhOftfIudF/nINoiQKwm2/3rnvjuCg6Ldy', 10000, 0);
