@@ -18,8 +18,8 @@ app_dir = os.path.dirname(os.path.realpath(__file__))
 db = sqlite3.connect(app_dir + '/../database.db')
 #TODO Change this to 1800 for production
 time_in_round = 1800
-min_time_between_clicks = 1
-spam_ban_time = 10
+min_time_between_clicks = 2.0 # float seconds
+spam_ban_time = 10.0 # float seconds
 flag_index = 0
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -51,9 +51,10 @@ class ButtonHandler(BaseHandler):
             raise tornado.web.HTTPError(403)
 
         # is the team being spammy?
+        user_id = self.get_current_user()
         now = time.time()
         cursor = db.cursor()
-        packaged = (team, ) #no idea why you have to do this
+        packaged = (user_id, ) #no idea why you have to do this
         cursor.execute("SELECT * from teams WHERE name=? LIMIT 1", packaged)
         row = cursor.fetchone()
         if not row:
@@ -65,15 +66,17 @@ class ButtonHandler(BaseHandler):
 
         if (spamming != 0):
             if (since_last_click > spam_ban_time):
-                self.set_spamming(team, 0)
+                self.set_spamming(user_id, 0)
             else:
+                self.set_click_time(user_id, now)
                 raise tornado.web.HTTPError(403)
         else:
             if (since_last_click < min_time_between_clicks):
-                self.set_spamming(team, 1)
+                self.set_click_time(user_id, now)
+                self.set_spamming(user_id, 1)
                 raise tornado.web.HTTPError(403)
 
-        self.set_click_time(team, now)
+        self.set_click_time(user_id, now)
 
         #check the captcha
         captcha_id_int = int(captcha_id)
