@@ -249,5 +249,6 @@ if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
     tornado.ioloop.IOLoop.current().add_timeout(time.time() + 1, checkButton)
-    tornado.ioloop.IOLoop.current().add_timeout(time.time() + time_in_round, resetRound)
+    mins_to_half_hr = time.localtime().tm_min
+    tornado.ioloop.IOLoop.current().add_timeout(time.time() + time_in_round - mins_to_half_hr, resetRound)
     tornado.ioloop.IOLoop.current().start()
