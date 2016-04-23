@@ -18,7 +18,7 @@ app_dir = os.path.dirname(os.path.realpath(__file__))
 db = sqlite3.connect(app_dir + '/../database.db')
 #TODO Change this to 1800 for production
 time_in_round = 1800
-min_time_between_clicks = 2.0 # float seconds
+min_time_between_clicks = 1.0 # float seconds
 spam_ban_time = 10.0 # float seconds
 flag_index = 0
 
@@ -69,12 +69,12 @@ class ButtonHandler(BaseHandler):
                 self.set_spamming(user_id, 0)
             else:
                 self.set_click_time(user_id, now)
-                raise tornado.web.HTTPError(403)
+                raise tornado.web.HTTPError(403, reason="STAAAHHHHP")
         else:
             if (since_last_click < min_time_between_clicks):
                 self.set_click_time(user_id, now)
                 self.set_spamming(user_id, 1)
-                raise tornado.web.HTTPError(403)
+                raise tornado.web.HTTPError(403, reason="CHILL")
 
         self.set_click_time(user_id, now)
 
