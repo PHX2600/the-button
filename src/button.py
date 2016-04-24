@@ -132,7 +132,7 @@ class ScoreSocketHandler(tornado.websocket.WebSocketHandler):
     def send_flag_to(self, winner):
         global db
         cursor = db.cursor()
-        cursor.execute("SELECT * from flags")
+        cursor.execute("SELECT * from flags ORDER BY value")
         rows = cursor.fetchall()
         flag_text = rows[flag_index]
 

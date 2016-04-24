@@ -18,11 +18,26 @@ CREATE TABLE flags (
 );
 
 --TODO replace in prod
-INSERT into flags (value) VALUES ('congrats flag1');
-INSERT into flags (value) VALUES ('congrats flag2');
-INSERT into flags (value) VALUES ('congrats flag3');
-INSERT into flags (value) VALUES ('congrats flag4');
-INSERT into flags (value) VALUES ('congrats flag5');
+INSERT into flags (value) VALUES ('h99YbHMtKTpiBVrQPOpMNfObyqWGqS45');
+INSERT into flags (value) VALUES ('7OUVkPGqoWYioAy0YlqK8li7z3iWYa2y');
+INSERT into flags (value) VALUES ('K9mxdByOrUzeNMJAaYdwM1WQrmqWLUg5');
+INSERT into flags (value) VALUES ('1P4RQWcEh0cWcR9joDh6HbwIkRcnWNTI');
+INSERT into flags (value) VALUES ('K3HYP0ZI2MQc1FS0aAeq9bYejpmKHI2W');
+INSERT into flags (value) VALUES ('D1ZroMZ0MoCMGDlbMw55ftzg0Wvn8nJN');
+INSERT into flags (value) VALUES ('Co5fUGRjkgW2P2GB0yOEy2nHAF1mhvLt');
+INSERT into flags (value) VALUES ('gpRZ8rORGy1UFpzK6PIe2dLNn0k6rn99');
+INSERT into flags (value) VALUES ('LErQyMhDtMlerw4rlU3gYPxMrvVtNkz9');
+INSERT into flags (value) VALUES ('Uiy8xhtrEoPg0P8V59PcaE8iJpLeHf56');
+INSERT into flags (value) VALUES ('hC5x9r1lsGFtZWNTLP7cxnE5IKciyG1B');
+INSERT into flags (value) VALUES ('jmVoIIP9yRyAr7CuWrlveizaJajPLjCF');
+INSERT into flags (value) VALUES ('lztBWfGVAxAbHQ8nxKMlUDLhKwHinArV');
+INSERT into flags (value) VALUES ('CsWYAjMJer0gthlUwmtXW8PyKFTQfXa0');
+INSERT into flags (value) VALUES ('BEFy3AvkSVrtTfQwt7TKR51gLOWfYP5W');
+INSERT into flags (value) VALUES ('o2DCKABZee6HxwuX4DhF8MlYzhcsZURT');
+INSERT into flags (value) VALUES ('H9JwPN92YSncFsTnNCOrk5BGtaI7MgnF');
+INSERT into flags (value) VALUES ('Wsz7aZ9MbJ8eNklka7rhLnEBy1IbKAZE');
+INSERT into flags (value) VALUES ('a9LLDTvPgYWhv3WuA1ED2pE9suAVvdaf');
+INSERT into flags (value) VALUES ('ENjPc8q2WSXjrGBnzNcnQjGxJMWnWczR');
 
 --INSERT into teams (name, score, hash, last_click, spamming) VALUES ('aaa', 0, '$2a$04$v6PKN3tpOyaiKV/3VZOjh.RRoDUDvITVLZuSwhzyRVbK82ANFMQOi', 10000, 0); -- aaa
 --INSERT into teams (name, score, hash, last_click, spamming) VALUES ('bbb', 0, '$2a$12$ydNsdi763MvDytMGdiBNE.rqWeoJxx9pRYHKyIRZ3l/E.x6pLOLmi', 10000, 0); -- bbb
