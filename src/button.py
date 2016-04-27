@@ -18,7 +18,8 @@ app_dir = os.path.dirname(os.path.realpath(__file__))
 db = sqlite3.connect(app_dir + '/../database.db')
 #TODO Change this to 1800 for production
 time_in_round = 1800
-min_time_between_clicks = 1.0 # float seconds
+min_time_between_clicks = 0.5 # float seconds
+button_check_time = 0.25 # float seconds
 spam_ban_time = 10.0 # float seconds
 flag_index = 0
 
@@ -216,11 +217,11 @@ def make_app():
         (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/css/"}),
         (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/js/"}),
         (r"/images/(.*)", tornado.web.StaticFileHandler, {"path": app_dir + "/public/images/"}),
-    ], cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
+    ], cookie_secret="CEHB0le6i7tXFsyIChKzQ7UOg2kgsako",
     login_url = "/")
 
 def checkButton():
-    tornado.ioloop.IOLoop.current().add_timeout(time.time() + 1, checkButton)
+    tornado.ioloop.IOLoop.current().add_timeout(time.time() + button_check_time, checkButton)
     global kingOfTheHill
     global goingNegative
     if(kingOfTheHill != ""):
@@ -248,7 +249,7 @@ def resetRound():
 if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
-    tornado.ioloop.IOLoop.current().add_timeout(time.time() + 1, checkButton)
+    tornado.ioloop.IOLoop.current().add_timeout(time.time() + button_check_time, checkButton)
     mins_to_half_hr = time.localtime().tm_min
     tornado.ioloop.IOLoop.current().add_timeout(time.time() + time_in_round - mins_to_half_hr, resetRound)
     tornado.ioloop.IOLoop.current().start()
